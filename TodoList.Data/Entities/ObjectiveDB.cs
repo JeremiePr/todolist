@@ -29,6 +29,9 @@ namespace TodoList.Data.Entities
         [Column("status_details")]
         public string StatusDetails { get; set; }
 
+        [Column("last_update_date")]
+        public DateTime LastUpdateDate { get; set; }
+
         [ForeignKey("StatusTypeKey")]
         public StatusTypeDB StatusType { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using TodoList.Models.Enums;
+﻿using System;
+using TodoList.Models.Enums;
 
 namespace TodoList.Models.Models
 {
@@ -10,5 +11,6 @@ namespace TodoList.Models.Models
         public string Details { get; set; }
         public int Priority { get; set; }
         public StatusTypes StatusType { get; set; }
+        public DateTime LastUpdateDate { get; set; }
     }
 }

@@ -19,7 +19,6 @@ namespace TodoList.Data.Providers
         public ReaderProvider(TodoListContext context)
         {
             _context = context;
-
             _mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
@@ -34,13 +33,18 @@ namespace TodoList.Data.Providers
             });
         }
 
-        public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes statusType)
+        public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes? statusType)
         {
             var query =
-                from x in _context.Objectives
-                where x.StatusTypeKey == (int)statusType
-                orderby x.Priority descending
-                select x;
+                from 
+                    x in _context.Objectives
+                where 
+                    !statusType.HasValue || x.StatusTypeKey == (int)statusType.Value
+                orderby 
+                    x.Priority descending, 
+                    x.LastUpdateDate ascending
+                select 
+                    x;
 
             var objectives = await query
                 .ProjectTo<ObjectiveDTO>(_mapperConfig)
@@ -55,13 +59,19 @@ namespace TodoList.Data.Providers
             return objectives;
         }
 
-        public async Task<IEnumerable<TaskDTO>> GetTasksByObjectiveId(int objectiveId, StatusTypes statusType)
+        public async Task<IEnumerable<TaskDTO>> GetTasksByObjectiveId(int objectiveId, StatusTypes? statusType)
         {
             var query =
-                from x in _context.Tasks
-                where x.ObjectiveId == objectiveId && x.StatusTypeKey == (int)statusType
-                orderby x.Priority descending
-                select x;
+                from 
+                    x in _context.Tasks
+                where 
+                    x.ObjectiveId == objectiveId && 
+                    (!statusType.HasValue || x.StatusTypeKey == (int)statusType.Value)
+                orderby 
+                    x.Priority descending,
+                    x.LastUpdateDate ascending
+                select 
+                    x;
 
             var tasks = await query
                 .ProjectTo<TaskDTO>(_mapperConfig)
@@ -73,10 +83,14 @@ namespace TodoList.Data.Providers
         public async Task<IEnumerable<ObjectiveHistoryDTO>> GetObjectiveHistoriesByObjectiveId(int objectiveId)
         {
             var query =
-                from x in _context.ObjectiveHistories
-                where x.ObjectiveId == objectiveId
-                orderby x.UpdateDate descending
-                select x;
+                from 
+                    x in _context.ObjectiveHistories
+                where 
+                    x.ObjectiveId == objectiveId
+                orderby 
+                    x.UpdateDate descending
+                select 
+                    x;
 
             var histories = await query
                 .ProjectTo<ObjectiveHistoryDTO>(_mapperConfig)
@@ -88,9 +102,12 @@ namespace TodoList.Data.Providers
         public async Task<ObjectiveDTO> GetOneObjective(int objectiveId)
         {
             var query =
-                from x in _context.Objectives
-                where x.Id == objectiveId
-                select x;
+                from 
+                    x in _context.Objectives
+                where 
+                    x.Id == objectiveId
+                select 
+                    x;
 
             var objective = await query
                 .ProjectTo<ObjectiveDTO>(_mapperConfig)
@@ -105,9 +122,12 @@ namespace TodoList.Data.Providers
         public async Task<TaskDTO> GetOneTask(int taskId)
         {
             var query =
-                from x in _context.Tasks
-                where x.Id == taskId
-                select x;
+                from 
+                    x in _context.Tasks
+                where 
+                    x.Id == taskId
+                select 
+                    x;
 
             var task = await query
                 .ProjectTo<TaskDTO>(_mapperConfig)

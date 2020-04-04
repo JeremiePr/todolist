@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TodoList.Data.Entities
@@ -23,6 +24,9 @@ namespace TodoList.Data.Entities
 
         [Column("status_type_key")]
         public int StatusTypeKey { get; set; }
+
+        [Column("last_update_date")]
+        public DateTime LastUpdateDate { get; set; }
 
         [ForeignKey("ObjectiveId")]
         public ObjectiveDB Objective { get; set; }

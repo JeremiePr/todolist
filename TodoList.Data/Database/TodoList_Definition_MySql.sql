@@ -17,7 +17,8 @@ create table objective
     priority int not null,
     status_type_key int not null,
     status_date datetime null,
-    status_details varchar(1000) null
+    status_details varchar(1000) null,
+    last_update_date datetime not null
 );
 
 alter table objective
@@ -32,7 +33,8 @@ create table task
     title varchar(100) not null,
     details varchar(1000) null,
     priority int not null,
-    status_type_key int not null
+    status_type_key int not null,
+    last_update_date datetime not null
 );
 
 alter table task

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TodoList.Models\TodoList.Models.csproj" />
+    <ProjectReference Include="..\TodoList.Utils\TodoList.Utils.csproj" />
   </ItemGroup>
 
 </Project>

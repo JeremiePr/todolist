@@ -6,19 +6,21 @@ using TodoList.Data.Context;
 using TodoList.Data.Entities;
 using TodoList.Models.Enums;
 using TodoList.Models.Models;
+using TodoList.Utils.Wrappers;
 
 namespace TodoList.Data.Providers
 {
     public class WriterProvider : IWriterProvider
     {
         private readonly TodoListContext _context;
+        private readonly IDateTimeWrapper _dateTimeWrapper;
         private readonly MapperConfiguration _mapperConfig;
         private readonly IMapper _mapper;
 
-        public WriterProvider(TodoListContext context)
+        public WriterProvider(TodoListContext context, IDateTimeWrapper dateTimeWrapper)
         {
             _context = context;
-
+            _dateTimeWrapper = dateTimeWrapper;
             _mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
@@ -41,7 +43,6 @@ namespace TodoList.Data.Providers
                     .ForMember(dto => dto.PreviousStatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.PreviousStatusType))
                     .ForMember(dto => dto.CurrentStatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.CurrentStatusType));
             });
-
             _mapper = new Mapper(_mapperConfig);
         }
 
@@ -56,7 +57,7 @@ namespace TodoList.Data.Providers
                 IsNew = true,
                 ObjectiveId = objective.Id,
                 PreviousStatusTypeKey = null,
-                UpdateDate = DateTime.Now
+                UpdateDate = _dateTimeWrapper.Now
             };
             _context.ObjectiveHistories.Add(history);
 
@@ -79,7 +80,7 @@ namespace TodoList.Data.Providers
                     IsNew = false,
                     ObjectiveId = objective.Id,
                     PreviousStatusTypeKey = objective.StatusTypeKey,
-                    UpdateDate = DateTime.Now
+                    UpdateDate = _dateTimeWrapper.Now
                 };
                 _context.ObjectiveHistories.Add(history);
             }

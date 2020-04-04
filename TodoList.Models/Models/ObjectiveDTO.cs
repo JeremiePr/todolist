@@ -13,6 +13,7 @@ namespace TodoList.Models.Models
         public DateTime? StatusDate { get; set; }
         public string StatusDetails { get; set; }
         public StatusTypes StatusType { get; set; }
+        public DateTime LastUpdateDate { get; set; }
         public IEnumerable<TaskDTO> Tasks { get; set; }
     }
 }
