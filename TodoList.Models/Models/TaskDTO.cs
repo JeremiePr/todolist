@@ -9,7 +9,6 @@ namespace TodoList.Models.Models
         public string Title { get; set; }
         public string Details { get; set; }
         public int Priority { get; set; }
-        public int StatusTypeId { get; set; }
         public StatusTypes StatusType { get; set; }
     }
 }

@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/TodoList/Objectives",
+      "launchUrl": "api/Objectives",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

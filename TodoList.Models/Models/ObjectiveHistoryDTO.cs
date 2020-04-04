@@ -7,8 +7,6 @@ namespace TodoList.Models.Models
     {
         public int Id { get; set; }
         public int ObjectiveId { get; set; }
-        public int? PreviousStatusTypeId { get; set; }
-        public int CurrentStatusTypeId { get; set; }
         public DateTime UpdateDate { get; set; }
         public bool IsNew { get; set; }
         public ObjectiveDTO Objective { get; set; }
