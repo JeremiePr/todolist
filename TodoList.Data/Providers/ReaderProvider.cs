@@ -22,28 +22,6 @@ namespace TodoList.Data.Providers
             _context = context;
         }
 
-        private Action<IMapperConfigurationExpression> GetMapperConfigurator(bool excludeCollections) => new Action<IMapperConfigurationExpression>(cfg =>
-        {
-            if (excludeCollections)
-            {
-                cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
-                .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey))
-                .ForMember(dto => dto.Tasks, opt => opt.MapFrom(dbo => (IList<TaskDTO>)null));
-            }
-            else
-            {
-                cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
-                .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
-            }
-
-            cfg.CreateMap<TaskDB, TaskDTO>()
-                .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
-
-            cfg.CreateMap<ObjectiveHistoryDB, ObjectiveHistoryDTO>()
-                .ForMember(dto => dto.PreviousStatusType, opt => opt.MapFrom(dbo => (StatusTypes?)dbo.PreviousStatusTypeKey))
-                .ForMember(dto => dto.CurrentStatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.CurrentStatusTypeKey));
-        });
-
         public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes? statusType)
         {
             var query =
