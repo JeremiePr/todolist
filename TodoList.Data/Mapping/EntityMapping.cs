@@ -12,6 +12,8 @@ namespace TodoList.Data.Mapping
     {
         public static MapperConfiguration GetMapperConfig(bool includeCollections = true) => new MapperConfiguration(cfg =>
         {
+            // DB to DTO
+
             if (includeCollections)
             {
                 cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
@@ -21,7 +23,7 @@ namespace TodoList.Data.Mapping
             {
                 cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
                     .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey))
-                    .ForMember(dto => dto.Tasks, opt => opt.MapFrom(dbo => (IEnumerable<TaskDTO>)null));
+                    .ForMember(dto => dto.Tasks, opt => opt.Ignore());
             }
 
             cfg.CreateMap<TaskDB, TaskDTO>()
@@ -31,15 +33,23 @@ namespace TodoList.Data.Mapping
                 .ForMember(dto => dto.PreviousStatusType, opt => opt.MapFrom(dbo => (StatusTypes?)dbo.PreviousStatusTypeKey))
                 .ForMember(dto => dto.CurrentStatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.CurrentStatusTypeKey));
 
+            // DTO to DB
+
             cfg.CreateMap<ObjectiveDTO, ObjectiveDB>()
-                .ForMember(dbo => dbo.StatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.StatusType));
+                .ForMember(dbo => dbo.StatusTypeKey, opt => opt.MapFrom(dto => (int)dto.StatusType))
+                .ForMember(dbo => dbo.StatusType, opt => opt.Ignore());
 
             cfg.CreateMap<TaskDTO, TaskDB>()
-                .ForMember(dbo => dbo.StatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.StatusType));
+                .ForMember(dbo => dbo.StatusTypeKey, opt => opt.MapFrom(dto => (int)dto.StatusType))
+                .ForMember(dbo => dbo.StatusType, opt => opt.Ignore())
+                .ForMember(dbo => dbo.Objective, opt => opt.Ignore());
 
             cfg.CreateMap<ObjectiveHistoryDTO, ObjectiveHistoryDB>()
-                .ForMember(dto => dto.PreviousStatusTypeKey, opt => opt.MapFrom(dbo => (int?)dbo.PreviousStatusType))
-                .ForMember(dto => dto.CurrentStatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.CurrentStatusType));
+                .ForMember(dbo => dbo.PreviousStatusTypeKey, opt => opt.MapFrom(dto => (int?)dto.PreviousStatusType))
+                .ForMember(dbo => dbo.CurrentStatusTypeKey, opt => opt.MapFrom(dto => (int)dto.CurrentStatusType))
+                .ForMember(dbo => dbo.PreviousStatusType, opt => opt.Ignore())
+                .ForMember(dbo => dbo.CurrentStatusType, opt => opt.Ignore())
+                .ForMember(dbo => dbo.Objective, opt => opt.Ignore());
         });
 
         public static IMapper GetMapper(bool includeCollections = true) => new Mapper(GetMapperConfig(includeCollections));

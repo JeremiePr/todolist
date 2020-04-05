@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoList.Data.Context;
-using TodoList.Data.Entities;
 using TodoList.Data.Mapping;
 using TodoList.Models.Enums;
 using TodoList.Models.Models;

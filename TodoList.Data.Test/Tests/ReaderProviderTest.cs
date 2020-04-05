@@ -21,6 +21,7 @@ namespace TodoList.Data.Test.Tests
             var options = new DbContextOptionsBuilder<TodoListContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var context = new TodoListContext(options);
             new InMemoryDatabasePopulator(context).PopulateData();
+
             _provider = new ReaderProvider(context);
         }
 

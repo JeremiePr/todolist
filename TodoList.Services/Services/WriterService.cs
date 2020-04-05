@@ -38,18 +38,6 @@ namespace TodoList.Services.Services
             }
         }
 
-        public async Task DeleteObjective(int objectiveId)
-        {
-            try
-            {
-                await _provider.DeleteObjective(objectiveId);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error on deleting objective: {ex.Message}");
-            }
-        }
-
         public async Task<TaskDTO> CreateTask(TaskDTO task)
         {
             try

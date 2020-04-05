@@ -22,9 +22,9 @@ namespace TodoList.Data.Test.Tools
             var statusTypeDone = CreateStatusType(4, "Done");
             // Objectives
             var objectiveSommeil = CreateObjective(1, "Dormir", "Faire dodo c'est important", 10, statusTypeTodo, new DateTime(2020, 05, 01, 23, 30, 00), "C'est l'heure du coucher", new DateTime(2020, 04, 10));
-            var objectiveManger = CreateObjective(2, "Manger", "Manger c'est nécessaire", 12, statusTypeTodo, null, "Y'a pas d'heurue pour manger", new DateTime(2020, 04, 10));
+            var objectiveManger = CreateObjective(2, "Manger", "Manger c'est nécessaire", 12, statusTypeTodo, null, "Y'a pas d'heure pour manger", new DateTime(2020, 04, 10));
             var objectiveAdministratif = CreateObjective(3, "Administratif", "Tâches administratives", 5, statusTypePostponed, null, "La procrastination tu connais", new DateTime(2020, 04, 10));
-            var objectiveAllerEnVacances = CreateObjective(4, "Vacances", "Aller je ne sais ou, en montagne", 3, statusTypeCancelled, null, "Avec cette histoire de virus c'est rapé...", new DateTime(2020, 04, 10));
+            var objectiveAllerEnVacances = CreateObjective(4, "Vacances", "Aller je ne sais ou, en montagne", 3, statusTypeCancelled, null, "On peut pas en ce moment...", new DateTime(2020, 04, 10));
             var objectiveCordesDeGuitare = CreateObjective(5, "Cordes de guitare", "Remettre les cordes à la guitare", 1, statusTypeDone, null, string.Empty, new DateTime(2020, 04, 10));
             // Tasks
             CreateTask(1, objectiveSommeil, "Lire Tolkien", "Lire 'Contes et légendes inachevés' de J.R.R. Tolkien", 3, statusTypeTodo, new DateTime(2020, 04, 10));

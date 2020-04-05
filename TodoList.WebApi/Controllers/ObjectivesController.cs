@@ -47,11 +47,5 @@ namespace TodoList.WebApi.Controllers
         {
             return await _writerService.UpdateObjective(objective);
         }
-
-        [HttpDelete("")]
-        public async Task DeleteObjective(int objectiveId)
-        {
-            await _writerService.DeleteObjective(objectiveId);
-        }
     }
 }

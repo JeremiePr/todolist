@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using TodoList.Data.Context;
 using TodoList.Data.Entities;
 using TodoList.Data.Mapping;
-using TodoList.Models.Enums;
 using TodoList.Models.Models;
 using TodoList.Utils.Wrappers;
 
@@ -27,11 +26,12 @@ namespace TodoList.Data.Providers
             var mapper = EntityMapping.GetMapper();
 
             var objective = mapper.Map<ObjectiveDB>(dto);
+            objective.LastUpdateDate = _dateTimeWrapper.Now;
             _context.Objectives.Add(objective);
 
             var history = new ObjectiveHistoryDB
             {
-                CurrentStatusTypeKey = (int)StatusTypes.Todo,
+                CurrentStatusTypeKey = objective.StatusTypeKey,
                 IsNew = true,
                 ObjectiveId = objective.Id,
                 PreviousStatusTypeKey = null,
@@ -69,6 +69,7 @@ namespace TodoList.Data.Providers
             objective.StatusDetails = dto.StatusDetails;
             objective.StatusTypeKey = (int)dto.StatusType;
             objective.Title = dto.Title;
+            objective.LastUpdateDate = _dateTimeWrapper.Now;
             _context.Objectives.Update(objective);
 
             await _context.SaveChangesAsync();
@@ -76,20 +77,11 @@ namespace TodoList.Data.Providers
             return EntityMapping.GetMapper().Map<ObjectiveDTO>(objective);
         }
 
-        public async Task DeleteObjective(int objectiveId)
-        {
-            var objective = await _context.Objectives.SingleOrDefaultAsync(x => x.Id == objectiveId);
-            if (objective == null)
-                throw new Exception($"There is no objective with id '{objectiveId}'");
-
-            _context.Objectives.Remove(objective);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<TaskDTO> CreateTask(TaskDTO dto)
         {
             var mapper = EntityMapping.GetMapper();
             var task = mapper.Map<TaskDB>(dto);
+            task.LastUpdateDate = _dateTimeWrapper.Now;
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
             return mapper.Map<TaskDTO>(task);
@@ -105,6 +97,7 @@ namespace TodoList.Data.Providers
             task.Priority = dto.Priority;
             task.StatusTypeKey = (int)dto.StatusType;
             task.Title = dto.Title;
+            task.LastUpdateDate = _dateTimeWrapper.Now;
             _context.Tasks.Update(task);
 
             await _context.SaveChangesAsync();
