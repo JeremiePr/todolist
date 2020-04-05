@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoList.Data.Context;
 using TodoList.Data.Entities;
+using TodoList.Data.Mapping;
 using TodoList.Models.Enums;
 using TodoList.Models.Models;
 
@@ -14,24 +16,33 @@ namespace TodoList.Data.Providers
     public class ReaderProvider : IReaderProvider
     {
         private readonly TodoListContext _context;
-        private readonly MapperConfiguration _mapperConfig;
 
         public ReaderProvider(TodoListContext context)
         {
             _context = context;
-            _mapperConfig = new MapperConfiguration(cfg =>
+        }
+
+        private Action<IMapperConfigurationExpression> GetMapperConfigurator(bool excludeCollections) => new Action<IMapperConfigurationExpression>(cfg =>
+        {
+            if (excludeCollections)
             {
                 cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
-                    .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
+                .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey))
+                .ForMember(dto => dto.Tasks, opt => opt.MapFrom(dbo => (IList<TaskDTO>)null));
+            }
+            else
+            {
+                cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
+                .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
+            }
 
-                cfg.CreateMap<TaskDB, TaskDTO>()
-                    .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
+            cfg.CreateMap<TaskDB, TaskDTO>()
+                .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
 
-                cfg.CreateMap<ObjectiveHistoryDB, ObjectiveHistoryDTO>()
-                    .ForMember(dto => dto.PreviousStatusType, opt => opt.MapFrom(dbo => (StatusTypes?)dbo.PreviousStatusTypeKey))
-                    .ForMember(dto => dto.CurrentStatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.PreviousStatusTypeKey));
-            });
-        }
+            cfg.CreateMap<ObjectiveHistoryDB, ObjectiveHistoryDTO>()
+                .ForMember(dto => dto.PreviousStatusType, opt => opt.MapFrom(dbo => (StatusTypes?)dbo.PreviousStatusTypeKey))
+                .ForMember(dto => dto.CurrentStatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.CurrentStatusTypeKey));
+        });
 
         public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes? statusType)
         {
@@ -47,7 +58,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var objectives = await query
-                .ProjectTo<ObjectiveDTO>(_mapperConfig)
+                .ProjectTo<ObjectiveDTO>(EntityMapping.GetMapperConfig())
                 .ToListAsync();
 
             foreach (var objective in objectives)
@@ -74,7 +85,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var tasks = await query
-                .ProjectTo<TaskDTO>(_mapperConfig)
+                .ProjectTo<TaskDTO>(EntityMapping.GetMapperConfig(false))
                 .ToListAsync();
 
             return tasks;
@@ -93,7 +104,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var histories = await query
-                .ProjectTo<ObjectiveHistoryDTO>(_mapperConfig)
+                .ProjectTo<ObjectiveHistoryDTO>(EntityMapping.GetMapperConfig(false))
                 .ToListAsync();
 
             return histories;
@@ -110,7 +121,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var objective = await query
-                .ProjectTo<ObjectiveDTO>(_mapperConfig)
+                .ProjectTo<ObjectiveDTO>(EntityMapping.GetMapperConfig())
                 .SingleOrDefaultAsync();
 
             objective.Tasks = objective.Tasks
@@ -130,7 +141,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var task = await query
-                .ProjectTo<TaskDTO>(_mapperConfig)
+                .ProjectTo<TaskDTO>(EntityMapping.GetMapperConfig(false))
                 .SingleOrDefaultAsync();
 
             return task;

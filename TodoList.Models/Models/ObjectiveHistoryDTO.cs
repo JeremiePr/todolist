@@ -10,7 +10,7 @@ namespace TodoList.Models.Models
         public DateTime UpdateDate { get; set; }
         public bool IsNew { get; set; }
         public ObjectiveDTO Objective { get; set; }
-        public StatusTypes? PreviousStatusType { get; set; }
+        public StatusTypes PreviousStatusType { get; set; }
         public StatusTypes CurrentStatusType { get; set;  }
     }
 }

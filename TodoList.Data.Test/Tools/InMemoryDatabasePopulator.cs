@@ -21,30 +21,30 @@ namespace TodoList.Data.Test.Tools
             var statusTypeCancelled = CreateStatusType(3, "Cancelled");
             var statusTypeDone = CreateStatusType(4, "Done");
             // Objectives
-            var objectiveSommeil = CreateObjective("Dormir", "Faire dodo c'est important", 10, statusTypeTodo, new DateTime(2020, 05, 01, 23, 30, 00), "C'est l'heure du coucher", new DateTime(2020, 04, 10));
-            var objectiveManger = CreateObjective("Manger", "Manger c'est nécessaire", 12, statusTypeTodo, null, "Y'a pas d'heurue pour manger", new DateTime(2020, 04, 10));
-            var objectiveAdministratif = CreateObjective("Administratif", "Tâches administratives", 5, statusTypePostponed, null, "La procrastination tu connais", new DateTime(2020, 04, 10));
-            var objectiveAllerEnVacances = CreateObjective("Vacances", "Aller je ne sais ou, en montagne", 3, statusTypeCancelled, null, "Avec cette histoire de virus c'est rapé...", new DateTime(2020, 04, 10));
-            var objectiveCordesDeGuitare = CreateObjective("Cordes de guitare", "Remettre les cordes à la guitare", 1, statusTypeDone, null, string.Empty, new DateTime(2020, 04, 10));
+            var objectiveSommeil = CreateObjective(1, "Dormir", "Faire dodo c'est important", 10, statusTypeTodo, new DateTime(2020, 05, 01, 23, 30, 00), "C'est l'heure du coucher", new DateTime(2020, 04, 10));
+            var objectiveManger = CreateObjective(2, "Manger", "Manger c'est nécessaire", 12, statusTypeTodo, null, "Y'a pas d'heurue pour manger", new DateTime(2020, 04, 10));
+            var objectiveAdministratif = CreateObjective(3, "Administratif", "Tâches administratives", 5, statusTypePostponed, null, "La procrastination tu connais", new DateTime(2020, 04, 10));
+            var objectiveAllerEnVacances = CreateObjective(4, "Vacances", "Aller je ne sais ou, en montagne", 3, statusTypeCancelled, null, "Avec cette histoire de virus c'est rapé...", new DateTime(2020, 04, 10));
+            var objectiveCordesDeGuitare = CreateObjective(5, "Cordes de guitare", "Remettre les cordes à la guitare", 1, statusTypeDone, null, string.Empty, new DateTime(2020, 04, 10));
             // Tasks
-            CreateTask(objectiveSommeil, "Lire Tolkien", "Lire 'Contes et légendes inachevés' de J.R.R. Tolkien", 3, statusTypeTodo, new DateTime(2020, 04, 10));
-            CreateTask(objectiveSommeil, "Charger le téléphone", "Sinon il sera déchargé demain", 8, statusTypeTodo, new DateTime(2020, 04, 11));
-            CreateTask(objectiveSommeil, "Un café", "Un café avant de se coucher ?? WTF", 2, statusTypeCancelled, new DateTime(2020, 04, 12));
-            CreateTask(objectiveManger, "Entrée", "Manger l'entrée", 4, statusTypeDone, new DateTime(2020, 04, 10));
-            CreateTask(objectiveManger, "Plat", "Manger le plat principal", 10, statusTypeTodo, new DateTime(2020, 04, 11));
-            CreateTask(objectiveManger, "Dessert", "Manger le dessert", 4, statusTypeCancelled, new DateTime(2020, 04, 12));
-            CreateTask(objectiveAdministratif, "Adresse assurances", "Changer mon adresse pour les assurances", 10, statusTypeDone, new DateTime(2020, 04, 10));
-            CreateTask(objectiveAdministratif, "Avertir les communes", "Avertir les 2 communes de ma sortie et de mon arrivée", 10, statusTypeTodo, new DateTime(2020, 04, 11));
-            CreateTask(objectiveAdministratif, "Internet", "Ouvrir ligne Internet", 12, statusTypePostponed, new DateTime(2020, 04, 12));
+            CreateTask(1, objectiveSommeil, "Lire Tolkien", "Lire 'Contes et légendes inachevés' de J.R.R. Tolkien", 3, statusTypeTodo, new DateTime(2020, 04, 10));
+            CreateTask(2, objectiveSommeil, "Charger le téléphone", "Sinon il sera déchargé demain", 8, statusTypeTodo, new DateTime(2020, 04, 11));
+            CreateTask(3, objectiveSommeil, "Un café", "Un café avant de se coucher ?? WTF", 2, statusTypeCancelled, new DateTime(2020, 04, 12));
+            CreateTask(4, objectiveManger, "Entrée", "Manger l'entrée", 4, statusTypeDone, new DateTime(2020, 04, 12));
+            CreateTask(5, objectiveManger, "Plat", "Manger le plat principal", 10, statusTypeTodo, new DateTime(2020, 04, 11));
+            CreateTask(6, objectiveManger, "Dessert", "Manger le dessert", 4, statusTypeCancelled, new DateTime(2020, 04, 10));
+            CreateTask(7, objectiveAdministratif, "Adresse assurances", "Changer mon adresse pour les assurances", 10, statusTypeDone, new DateTime(2020, 04, 10));
+            CreateTask(8, objectiveAdministratif, "Avertir les communes", "Avertir les 2 communes de ma sortie et de mon arrivée", 10, statusTypeTodo, new DateTime(2020, 04, 11));
+            CreateTask(9, objectiveAdministratif, "Internet", "Ouvrir ligne Internet", 12, statusTypePostponed, new DateTime(2020, 04, 12));
             // Histories
-            CreateObjectiveHistory(objectiveSommeil, true, statusTypeTodo, null, new DateTime(2020, 04, 04));
-            CreateObjectiveHistory(objectiveManger, true, statusTypeTodo, null, new DateTime(2020, 04, 04));
-            CreateObjectiveHistory(objectiveAdministratif, true, statusTypeTodo, null, new DateTime(2020, 04, 04));
-            CreateObjectiveHistory(objectiveAdministratif, false, statusTypePostponed, statusTypeTodo, new DateTime(2020, 04, 05));
-            CreateObjectiveHistory(objectiveAllerEnVacances, true, statusTypeTodo, null, new DateTime(2020, 04, 04));
-            CreateObjectiveHistory(objectiveAllerEnVacances, false, statusTypeCancelled, statusTypeTodo, new DateTime(2020, 04, 05));
-            CreateObjectiveHistory(objectiveCordesDeGuitare, true, statusTypeTodo, null, new DateTime(2020, 04, 04));
-            CreateObjectiveHistory(objectiveCordesDeGuitare, false, statusTypeDone, statusTypeTodo, new DateTime(2020, 04, 05));
+            CreateObjectiveHistory(1, objectiveSommeil, true, statusTypeTodo, statusTypeCancelled, new DateTime(2020, 04, 04));
+            CreateObjectiveHistory(2, objectiveManger, true, statusTypeTodo, statusTypeCancelled, new DateTime(2020, 04, 04));
+            CreateObjectiveHistory(3, objectiveAdministratif, true, statusTypeTodo, statusTypeCancelled, new DateTime(2020, 04, 04));
+            CreateObjectiveHistory(4, objectiveAdministratif, false, statusTypePostponed, statusTypeTodo, new DateTime(2020, 04, 05));
+            CreateObjectiveHistory(5, objectiveAllerEnVacances, true, statusTypeTodo, statusTypeCancelled, new DateTime(2020, 04, 04));
+            CreateObjectiveHistory(6, objectiveAllerEnVacances, false, statusTypeCancelled, statusTypeTodo, new DateTime(2020, 04, 05));
+            CreateObjectiveHistory(7, objectiveCordesDeGuitare, true, statusTypeTodo, statusTypeCancelled, new DateTime(2020, 04, 04));
+            CreateObjectiveHistory(8, objectiveCordesDeGuitare, false, statusTypeDone, statusTypeTodo, new DateTime(2020, 04, 05));
         }
 
         private StatusTypeDB CreateStatusType(int key, string name)
@@ -59,10 +59,11 @@ namespace TodoList.Data.Test.Tools
             return statusType;
         }
 
-        private ObjectiveDB CreateObjective(string title, string details, int priority, StatusTypeDB statusType, DateTime? statusDate, string statusDetails, DateTime lastUpdateDate)
+        private ObjectiveDB CreateObjective(int id, string title, string details, int priority, StatusTypeDB statusType, DateTime? statusDate, string statusDetails, DateTime lastUpdateDate)
         {
             var objective = new ObjectiveDB
             {
+                Id = id,
                 Details = details,
                 Priority = priority,
                 StatusDate = statusDate,
@@ -77,10 +78,11 @@ namespace TodoList.Data.Test.Tools
             return objective;
         }
 
-        private TaskDB CreateTask(ObjectiveDB objective, string title, string details, int priority, StatusTypeDB statusType, DateTime lastUpdateDate)
+        private TaskDB CreateTask(int id, ObjectiveDB objective, string title, string details, int priority, StatusTypeDB statusType, DateTime lastUpdateDate)
         {
             var task = new TaskDB
             {
+                Id = id,
                 Details = details,
                 Objective = objective,
                 ObjectiveId = objective.Id,
@@ -95,10 +97,11 @@ namespace TodoList.Data.Test.Tools
             return task;
         }
 
-        private ObjectiveHistoryDB CreateObjectiveHistory(ObjectiveDB objective, bool isNew, StatusTypeDB currentStatusType, StatusTypeDB previousStatusType, DateTime updateDate)
+        private ObjectiveHistoryDB CreateObjectiveHistory(int id, ObjectiveDB objective, bool isNew, StatusTypeDB currentStatusType, StatusTypeDB previousStatusType, DateTime updateDate)
         {
             var history = new ObjectiveHistoryDB
             {
+                Id = id,
                 CurrentStatusType = currentStatusType,
                 CurrentStatusTypeKey = currentStatusType.Key,
                 IsNew = isNew,

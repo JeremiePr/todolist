@@ -10,6 +10,7 @@ namespace TodoList.Models.Models
         public string Title { get; set; }
         public string Details { get; set; }
         public int Priority { get; set; }
+        public ObjectiveDTO Objective { get; set; }
         public StatusTypes StatusType { get; set; }
         public DateTime LastUpdateDate { get; set; }
     }

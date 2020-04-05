@@ -65,11 +65,71 @@ namespace TodoList.Data.Test.Tests
             Assert.AreEqual(expectedTaskPriority, task.Priority);
         }
 
-        [DataTestMethod] //TODO
+        [DataTestMethod]
+        [DataRow(1, 3, StatusTypes.Postponed)]
+        [DataRow(3, 2, null)]
+        [DataRow(2, 1, StatusTypes.Todo)]
+        [DataRow(0, 6, null)]
         public async Task GetTasksByObjectiveId_TestCount(int expectedCount, int objectiveId, StatusTypes? statusType)
         {
             var tasks = await _provider.GetTasksByObjectiveId(objectiveId, statusType);
             Assert.AreEqual(expectedCount, tasks.Count());
+        }
+
+        [DataTestMethod]
+        [DataRow("Charger le téléphone", 8, 0, 1, StatusTypes.Todo)]
+        [DataRow("Dessert", 4, 1, 2, null)]
+        public async Task GetTasksByObjectiveId_TestPriorityOrder(string expectedTitle, int expectedPriority, int itemIndex, int objectiveId, StatusTypes? statusType)
+        {
+            var tasks = await _provider.GetTasksByObjectiveId(objectiveId, statusType);
+            Assert.IsTrue(tasks.Count() > itemIndex);
+            var task = tasks.ToList()[itemIndex];
+            Assert.AreEqual(expectedTitle, task.Title);
+            Assert.AreEqual(expectedPriority, task.Priority);
+        }
+
+        [DataTestMethod]
+        [DataRow(1, 2)]
+        [DataRow(2, 4)]
+        [DataRow(0, 6)]
+        public async Task GetObjectiveHistoriesByObjectiveId_TestCount(int expectedCount, int objectiveId)
+        {
+            var histories = await _provider.GetObjectiveHistoriesByObjectiveId(objectiveId);
+            Assert.AreEqual(expectedCount, histories.Count());
+        }
+
+        [DataTestMethod]
+        [DataRow(05, 0, 3)]
+        [DataRow(04, 1, 3)]
+        public async Task GetObjectiveHistoriesByObjectiveId_TestUpdateDateOrder(int expectedUpdateDateDay, int itemIndex, int objectiveId)
+        {
+            var histories = await _provider.GetObjectiveHistoriesByObjectiveId(objectiveId);
+            Assert.IsTrue(histories.Count() > itemIndex);
+            var history = histories.ToList()[itemIndex];
+            Assert.AreEqual(expectedUpdateDateDay, history.UpdateDate.Day);
+        }
+
+        [DataTestMethod]
+        [DataRow("Vacances", 3, 4)]
+        [DataRow("Cordes de guitare", 1, 5)]
+        [DataRow("Dormir", 10, 1)]
+        public async Task GetOneObjective_TestValues(string expectedTitle, int expectedPriority, int objectiveId)
+        {
+            var objective = await _provider.GetOneObjective(objectiveId);
+            Assert.AreEqual(expectedTitle, objective.Title);
+            Assert.AreEqual(expectedPriority, objective.Priority);
+        }
+
+        [DataTestMethod]
+        [DataRow("Entrée", 4, "Manger", 4)]
+        [DataRow("Charger le téléphone", 8, "Dormir", 2)]
+        [DataRow("Avertir les communes", 10, "Administratif", 8)]
+        public async Task GetOneTask_TestValues(string expectedTitle, int expectedPriority, string expectedObjectiveTitle, int taskId)
+        {
+            var task = await _provider.GetOneTask(taskId);
+            Assert.AreEqual(expectedTitle, task.Title);
+            Assert.AreEqual(expectedPriority, task.Priority);
+            Assert.AreEqual(expectedObjectiveTitle, task.Objective.Title);
         }
     }
 }

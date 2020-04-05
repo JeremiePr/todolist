@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using TodoList.Data.Context;
 using TodoList.Data.Entities;
+using TodoList.Data.Mapping;
 using TodoList.Models.Enums;
 using TodoList.Models.Models;
 using TodoList.Utils.Wrappers;
@@ -14,41 +15,18 @@ namespace TodoList.Data.Providers
     {
         private readonly TodoListContext _context;
         private readonly IDateTimeWrapper _dateTimeWrapper;
-        private readonly MapperConfiguration _mapperConfig;
-        private readonly IMapper _mapper;
 
         public WriterProvider(TodoListContext context, IDateTimeWrapper dateTimeWrapper)
         {
             _context = context;
             _dateTimeWrapper = dateTimeWrapper;
-            _mapperConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
-                    .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
-
-                cfg.CreateMap<TaskDB, TaskDTO>()
-                    .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
-
-                cfg.CreateMap<ObjectiveHistoryDB, ObjectiveHistoryDTO>()
-                    .ForMember(dto => dto.PreviousStatusType, opt => opt.MapFrom(dbo => (StatusTypes?)dbo.PreviousStatusTypeKey))
-                    .ForMember(dto => dto.CurrentStatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.PreviousStatusTypeKey));
-
-                cfg.CreateMap<ObjectiveDTO, ObjectiveDB>()
-                    .ForMember(dbo => dbo.StatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.StatusType));
-
-                cfg.CreateMap<TaskDTO, TaskDB>()
-                    .ForMember(dbo => dbo.StatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.StatusType));
-
-                cfg.CreateMap<ObjectiveHistoryDTO, ObjectiveHistoryDB>()
-                    .ForMember(dto => dto.PreviousStatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.PreviousStatusType))
-                    .ForMember(dto => dto.CurrentStatusTypeKey, opt => opt.MapFrom(dbo => (int)dbo.CurrentStatusType));
-            });
-            _mapper = new Mapper(_mapperConfig);
         }
 
         public async Task<ObjectiveDTO> CreateObjective(ObjectiveDTO dto)
         {
-            var objective = _mapper.Map<ObjectiveDB>(dto);
+            var mapper = EntityMapping.GetMapper();
+
+            var objective = mapper.Map<ObjectiveDB>(dto);
             _context.Objectives.Add(objective);
 
             var history = new ObjectiveHistoryDB
@@ -63,7 +41,7 @@ namespace TodoList.Data.Providers
 
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<ObjectiveDTO>(objective);
+            return mapper.Map<ObjectiveDTO>(objective);
         }
 
         public async Task<ObjectiveDTO> UpdateObjective(ObjectiveDTO dto)
@@ -95,7 +73,7 @@ namespace TodoList.Data.Providers
 
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<ObjectiveDTO>(objective);
+            return EntityMapping.GetMapper().Map<ObjectiveDTO>(objective);
         }
 
         public async Task DeleteObjective(int objectiveId)
@@ -110,10 +88,11 @@ namespace TodoList.Data.Providers
 
         public async Task<TaskDTO> CreateTask(TaskDTO dto)
         {
-            var task = _mapper.Map<TaskDB>(dto);
+            var mapper = EntityMapping.GetMapper();
+            var task = mapper.Map<TaskDB>(dto);
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
-            return _mapper.Map<TaskDTO>(task);
+            return mapper.Map<TaskDTO>(task);
         }
 
         public async Task<TaskDTO> UpdateTask(TaskDTO dto)
@@ -130,7 +109,7 @@ namespace TodoList.Data.Providers
 
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<TaskDTO>(task);
+            return EntityMapping.GetMapper().Map<TaskDTO>(task);
         }
 
         public async Task DeleteTask(int taskId)
