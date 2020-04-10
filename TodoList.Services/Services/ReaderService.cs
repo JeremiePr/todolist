@@ -16,7 +16,7 @@ namespace TodoList.Services.Services
             _provider = readerProvider;
         }
 
-        public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes statusType)
+        public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes? statusType)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace TodoList.Services.Services
             }
         }
 
-        public async Task<IEnumerable<TaskDTO>> GetTasksByObjectiveId(int objectiveId, StatusTypes statusType)
+        public async Task<IEnumerable<TaskDTO>> GetTasksByObjectiveId(int objectiveId, StatusTypes? statusType)
         {
             try
             {

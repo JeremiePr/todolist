@@ -37,6 +37,7 @@ namespace TodoList.WebApi
             services.AddDbContext<TodoListContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             var types = new List<(Type contract, Type implementation)>();
+            types.AddRange(Utils.Dependencies.Types);
             types.AddRange(Data.Dependencies.Types);
             types.AddRange(Services.Dependencies.Types);
 

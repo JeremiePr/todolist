@@ -24,10 +24,11 @@ namespace TodoList.WebApi.Controllers
         [HttpGet("")]
         public async Task<IEnumerable<TaskDTO>> GetTasks(int objectiveId, int statusTypeKey)
         {
-            if (!Enum.IsDefined(typeof(StatusTypes), statusTypeKey))
-                throw new InvalidCastException($"Integer type '{statusTypeKey}' cannot be converted into type ${nameof(StatusTypes)}");
+            StatusTypes? statusType = null;
+            if (Enum.IsDefined(typeof(StatusTypes), statusTypeKey))
+                statusType = (StatusTypes)statusTypeKey;
 
-            return await _readerService.GetTasksByObjectiveId(objectiveId, (StatusTypes)statusTypeKey);
+            return await _readerService.GetTasksByObjectiveId(objectiveId, statusType);
         }
 
         [HttpGet("id")]
