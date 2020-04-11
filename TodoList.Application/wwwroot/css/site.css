@@ -13,12 +13,27 @@
 
 .tl-objective-card {
     padding: 15px;
-    background-color: #D2C6B2;
+    background-color: #d2c6b2;
     box-shadow: 4px 6px 1px #442727;
+    border-radius: 20px;
 }
     .tl-objective-card:hover {
         box-shadow: 6px 9px 3px #442727;
         background-color: #b7ad9d;
+    }
+
+.tl-task-item {
+    padding: 10px;
+    background-color: #d2c6b2;
+    box-shadow: 3px 5px 1px #442727;
+    border-radius: 20px;
+}
+
+.tl-noscrollbar {
+    -ms-overflow-style: none;
+}
+    .tl-noscrollbar::-webkit-scrollbar {
+        width: 0 !important;
     }
 
 /* General */

@@ -3,18 +3,14 @@
     <h2>@Objective.Title</h2>
     <h6>@Objective.Details</h6>
     <p>@AppUtils.GetStatusTypeText(Objective.StatusType)</p>
-    <table class="table">
-        <tbody>
-            @foreach (var task in Objective.Tasks)
-            {
-                <tr>
-                    <td>@task.Title</td>
-                    <td>@task.Details</td>
-                    <td>@AppUtils.GetStatusTypeText(task.StatusType)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="tl-noscrollbar" style="height: 65vh; overflow-y: scroll; overflow-x: hidden;">
+        @foreach (var task in Objective.Tasks)
+        {
+            <div style="padding: 10px; margin: 10px;">
+                <TaskItem Task="task"></TaskItem>
+            </div>
+        }
+    </div>
 }
 
 @code {

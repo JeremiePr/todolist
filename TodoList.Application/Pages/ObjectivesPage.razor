@@ -1,9 +1,8 @@
 ﻿@page "/Objectives"
 @inject ObjectiveService ObjectiveService
 
-
 <div class="row">
-    <div class="col-8" style="padding: 20px 50px 20px 0">
+    <div class="col-8 tl-noscrollbar" style="padding: 20px 50px 20px 0; height: 80vh; overflow-y: scroll;">
         <div class="row">
             @foreach (var objective in Objectives)
             {

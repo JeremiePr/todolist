@@ -1,6 +1,11 @@
 ﻿@page "/"
-@inject ObjectiveService ObjectiveService
+@inject NavigationManager NavigationManager
 
 @code {
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        NavigationManager.NavigateTo("/Objectives");
+    }
 
 }
