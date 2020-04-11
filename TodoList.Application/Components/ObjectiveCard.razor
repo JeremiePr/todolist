@@ -1,34 +1,15 @@
-﻿@inject ObjectiveService ObjectiveService
-
-<div class="tl-objective-card">
+﻿<div class="tl-objective-card clickable" @onclick="() => OnCardClicked.InvokeAsync(Objective)">
     <h3>@Objective.Title</h3>
     <p>@Objective.Details</p>
 </div>
 
-@*<table class="table table-hover">
-    <thead>
-    <th></th>
-    <th></th>
-    <th></th>
-    </thead>
-
-    <tbody>
-        <tr data-toggle="collapse" data-target="#accordion" class="clickable">
-            <td>Some Stuff</td>
-            <td>Some more stuff</td>
-            <td>And some more</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div id="accordion" class="collapse">Hidden by default</div>
-            </td>
-        </tr>
-    </tbody>
-</table>*@
 
 @code {
 
     [Parameter]
     public ObjectiveDTO Objective { get; set; }
+
+    [Parameter]
+    public EventCallback<ObjectiveDTO> OnCardClicked { get; set; }
 
 }

@@ -1,0 +1,45 @@
+﻿@page "/Objectives"
+@inject ObjectiveService ObjectiveService
+
+
+<div class="row">
+    <div class="col-8" style="padding: 20px 50px 20px 0">
+        <div class="row">
+            @foreach (var objective in Objectives)
+            {
+                <div class="col-6" style="width: 100%; padding: 15px;">
+                    <ObjectiveCard Objective="@objective" OnCardClicked="@OnCardClicked"></ObjectiveCard>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-4" style="padding: 20px 0 20px 50px;">
+        <ObjectiveDetails IsVisible="IsDetailsPanelVisible" Objective="CurrentObjective"></ObjectiveDetails>
+    </div>
+</div>
+
+
+@code {
+
+    public IList<ObjectiveDTO> Objectives { get; set; }
+    public ObjectiveDTO CurrentObjective { get; set; }
+    public bool IsDetailsPanelVisible { get; set; }
+
+    public ObjectivesPage()
+    {
+        Objectives = new List<ObjectiveDTO>();
+        IsDetailsPanelVisible = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Objectives = await ObjectiveService.GetObjectives(null);
+    }
+
+    private void OnCardClicked(ObjectiveDTO objective)
+    {
+        IsDetailsPanelVisible = true;
+        CurrentObjective = objective;
+    }
+
+}

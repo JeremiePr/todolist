@@ -7,16 +7,25 @@
     padding: 100px 5% 50px 5%;
 }
 
-.tl-objective-card {
-    padding: 15px;
-    background-color: #1b6ec2;
-    border: 1px solid #555;
+.tl-navbar {
+    background-color: #442727;
 }
 
+.tl-objective-card {
+    padding: 15px;
+    background-color: #D2C6B2;
+    box-shadow: 4px 6px 1px #442727;
+}
+    .tl-objective-card:hover {
+        box-shadow: 6px 9px 3px #442727;
+        background-color: #b7ad9d;
+    }
+
 /* General */
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #ddd;
+    background-color: #EAE7D9;
 }
 
 a, .btn-link {
@@ -195,4 +204,8 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+.clickable {
+    cursor: pointer;
 }

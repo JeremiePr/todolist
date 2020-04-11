@@ -1,0 +1,34 @@
+﻿@if (IsVisible && Objective != null)
+{
+    <h2>@Objective.Title</h2>
+    <h6>@Objective.Details</h6>
+    <p>@AppUtils.GetStatusTypeText(Objective.StatusType)</p>
+    <table class="table">
+        <tbody>
+            @foreach (var task in Objective.Tasks)
+            {
+                <tr>
+                    <td>@task.Title</td>
+                    <td>@task.Details</td>
+                    <td>@AppUtils.GetStatusTypeText(task.StatusType)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public ObjectiveDTO Objective { get; set; }
+
+    public ObjectiveDetails()
+    {
+        IsVisible = false;
+        Objective = new ObjectiveDTO();
+    }
+
+}

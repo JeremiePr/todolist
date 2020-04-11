@@ -1,27 +1,6 @@
 ﻿@page "/"
 @inject ObjectiveService ObjectiveService
 
-<div class="col-8 row">
-    @foreach (var objective in Objectives)
-    {
-        <div class="col-6" style="width: 100%; padding: 40px;">
-            <ObjectiveCard Objective="@objective"></ObjectiveCard>
-        </div>
-    }
-</div>
-
 @code {
-
-    public IList<ObjectiveDTO> Objectives { get; set; }
-
-    public Index()
-    {
-        Objectives = new List<ObjectiveDTO>();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        Objectives = await ObjectiveService.GetObjectives(null);
-    }
 
 }
