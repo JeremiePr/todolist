@@ -1,14 +1,106 @@
-﻿@if (IsVisible && Objective != null)
+﻿@inject TaskService TaskService
+
+@if (IsVisible && Objective != null)
 {
     <h2>@Objective.Title</h2>
     <h6>@Objective.Details</h6>
-    <p>@AppUtils.GetStatusTypeText(Objective.StatusType)</p>
+    <div style="height: 40px;"></div>
     <div class="tl-noscrollbar" style="height: 65vh; overflow-y: scroll; overflow-x: hidden;">
-        @foreach (var task in Objective.Tasks)
+        @if (IsTodoSectionVisible)
         {
-            <div style="padding: 10px; margin: 10px;">
-                <TaskItem Task="task"></TaskItem>
-            </div>
+            <h6 class="clickable" @onclick="() => IsTodoSectionVisible = false">
+                Todo
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                </svg>
+            </h6>
+            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Todo))
+            {
+                <div style="padding: 10px; margin: 10px;">
+                    <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
+                </div>
+            }
+        }
+        else
+        {
+            <h6 class="clickable" @onclick="() => IsTodoSectionVisible = true">
+                Todo
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z" />
+                </svg>
+            </h6>
+        }
+        @if (IsPostponedSectionVisible)
+        {
+            <h6 class="clickable" @onclick="() => IsPostponedSectionVisible = false">
+                Postponed
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                </svg>
+            </h6>
+            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Postponed))
+            {
+                <div style="padding: 10px; margin: 10px;">
+                    <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
+                </div>
+            }
+        }
+        else
+        {
+            <h6 class="clickable" @onclick="() => IsPostponedSectionVisible = true">
+                Postponed
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z" />
+                </svg>
+            </h6>
+        }
+        @if (IsCancelledSectionVisible)
+        {
+            <h6 class="clickable" @onclick="() => IsCancelledSectionVisible = false">
+                Cancelled
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                </svg>
+            </h6>
+            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Cancelled))
+            {
+                <div style="padding: 10px; margin: 10px;">
+                    <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
+                </div>
+            }
+        }
+        else
+        {
+            <h6 class="clickable" @onclick="() => IsCancelledSectionVisible = true">
+                Cancelled
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z" />
+                </svg>
+            </h6>
+        }
+        @if (IsDoneSectionVisible)
+        {
+            <h6 class="clickable" @onclick="() => IsDoneSectionVisible = false">
+                Done
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                </svg>
+            </h6>
+            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Done))
+            {
+                <div style="padding: 10px; margin: 10px;">
+                    <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
+                </div>
+            }
+        }
+        else
+        {
+            <h6 class="clickable" @onclick="() => IsDoneSectionVisible = true">
+                Done
+                <svg width="1em" height="1em" fill="currentColor">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z" />
+                </svg>
+            </h6>
         }
     </div>
 }
@@ -21,10 +113,24 @@
     [Parameter]
     public ObjectiveDTO Objective { get; set; }
 
+    public bool IsTodoSectionVisible { get; set; }
+    public bool IsPostponedSectionVisible { get; set; }
+    public bool IsCancelledSectionVisible { get; set; }
+    public bool IsDoneSectionVisible { get; set; }
+
     public ObjectiveDetails()
     {
         IsVisible = false;
         Objective = new ObjectiveDTO();
+        IsTodoSectionVisible = true;
+        IsPostponedSectionVisible = true;
+        IsCancelledSectionVisible = false;
+        IsDoneSectionVisible = false;
+    }
+
+    private async Task UpdateTask(TaskDTO task)
+    {
+        task = await TaskService.UpdateTask(task);
     }
 
 }
