@@ -14,7 +14,7 @@
                     <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
                 </svg>
             </h6>
-            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Todo))
+            @foreach (var task in Tasks.Where(t => t.StatusType == StatusTypes.Todo))
             {
                 <div style="padding: 10px; margin: 10px;">
                     <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
@@ -38,7 +38,7 @@
                     <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
                 </svg>
             </h6>
-            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Postponed))
+            @foreach (var task in Tasks.Where(t => t.StatusType == StatusTypes.Postponed))
             {
                 <div style="padding: 10px; margin: 10px;">
                     <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
@@ -62,7 +62,7 @@
                     <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
                 </svg>
             </h6>
-            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Cancelled))
+            @foreach (var task in Tasks.Where(t => t.StatusType == StatusTypes.Cancelled))
             {
                 <div style="padding: 10px; margin: 10px;">
                     <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
@@ -86,7 +86,7 @@
                     <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
                 </svg>
             </h6>
-            @foreach (var task in Objective.Tasks.Where(t => t.StatusType == StatusTypes.Done))
+            @foreach (var task in Tasks.Where(t => t.StatusType == StatusTypes.Done))
             {
                 <div style="padding: 10px; margin: 10px;">
                     <TaskItem Task="task" OnTaskUpdate="UpdateTask"></TaskItem>
@@ -108,29 +108,29 @@
 @code {
 
     [Parameter]
-    public bool IsVisible { get; set; }
+    public bool IsVisible { get; set; } = false;
 
     [Parameter]
-    public ObjectiveDTO Objective { get; set; }
+    public ObjectiveDTO Objective { get; set; } = new ObjectiveDTO();
 
-    public bool IsTodoSectionVisible { get; set; }
-    public bool IsPostponedSectionVisible { get; set; }
-    public bool IsCancelledSectionVisible { get; set; }
-    public bool IsDoneSectionVisible { get; set; }
+    public IList<TaskDTO> Tasks { get; set; } = new List<TaskDTO>();
+    public bool IsTodoSectionVisible { get; set; } = true;
+    public bool IsPostponedSectionVisible { get; set; } = true;
+    public bool IsCancelledSectionVisible { get; set; } = false;
+    public bool IsDoneSectionVisible { get; set; } = false;
 
-    public ObjectiveDetails()
+    protected override Task OnParametersSetAsync() => LoadTasks();
+
+    private async Task LoadTasks()
     {
-        IsVisible = false;
-        Objective = new ObjectiveDTO();
-        IsTodoSectionVisible = true;
-        IsPostponedSectionVisible = true;
-        IsCancelledSectionVisible = false;
-        IsDoneSectionVisible = false;
+        if (Objective != null)
+            Tasks = await TaskService.GetTasks(Objective.Id, null);
     }
 
     private async Task UpdateTask(TaskDTO task)
     {
         task = await TaskService.UpdateTask(task);
+        await LoadTasks();
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace TodoList.Data.Providers
     public class ReaderProvider : IReaderProvider
     {
         private readonly TodoListContext _context;
+        private readonly MapperConfiguration _mapperConfig;
 
         public ReaderProvider(TodoListContext context)
         {
             _context = context;
+            _mapperConfig = EntityMapping.GetMapperConfig();
         }
 
         public async Task<IEnumerable<ObjectiveDTO>> GetObjectives(StatusTypes? statusType)
@@ -36,12 +39,6 @@ namespace TodoList.Data.Providers
                 .ProjectTo<ObjectiveDTO>(EntityMapping.GetMapperConfig())
                 .ToListAsync();
 
-            foreach (var objective in objectives)
-            {
-                objective.Tasks = objective.Tasks
-                    .OrderByDescending(x => x.Priority);
-            }
-
             return objectives;
         }
 
@@ -60,7 +57,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var tasks = await query
-                .ProjectTo<TaskDTO>(EntityMapping.GetMapperConfig(false))
+                .ProjectTo<TaskDTO>(_mapperConfig)
                 .ToListAsync();
 
             return tasks;
@@ -79,7 +76,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var histories = await query
-                .ProjectTo<ObjectiveHistoryDTO>(EntityMapping.GetMapperConfig(false))
+                .ProjectTo<ObjectiveHistoryDTO>(_mapperConfig)
                 .ToListAsync();
 
             return histories;
@@ -99,9 +96,6 @@ namespace TodoList.Data.Providers
                 .ProjectTo<ObjectiveDTO>(EntityMapping.GetMapperConfig())
                 .SingleOrDefaultAsync();
 
-            objective.Tasks = objective.Tasks
-                    .OrderByDescending(x => x.Priority);
-
             return objective;
         }
 
@@ -116,7 +110,7 @@ namespace TodoList.Data.Providers
                     x;
 
             var task = await query
-                .ProjectTo<TaskDTO>(EntityMapping.GetMapperConfig(false))
+                .ProjectTo<TaskDTO>(_mapperConfig)
                 .SingleOrDefaultAsync();
 
             return task;

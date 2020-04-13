@@ -10,21 +10,10 @@ namespace TodoList.Data.Mapping
 {
     public static class EntityMapping
     {
-        public static MapperConfiguration GetMapperConfig(bool includeCollections = true) => new MapperConfiguration(cfg =>
+        public static MapperConfiguration GetMapperConfig() => new MapperConfiguration(cfg =>
         {
-            // DB to DTO
-
-            if (includeCollections)
-            {
-                cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
+            cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
                     .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
-            }
-            else
-            {
-                cfg.CreateMap<ObjectiveDB, ObjectiveDTO>()
-                    .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey))
-                    .ForMember(dto => dto.Tasks, opt => opt.Ignore());
-            }
 
             cfg.CreateMap<TaskDB, TaskDTO>()
                 .ForMember(dto => dto.StatusType, opt => opt.MapFrom(dbo => (StatusTypes)dbo.StatusTypeKey));
@@ -52,6 +41,6 @@ namespace TodoList.Data.Mapping
                 .ForMember(dbo => dbo.Objective, opt => opt.Ignore());
         });
 
-        public static IMapper GetMapper(bool includeCollections = true) => new Mapper(GetMapperConfig(includeCollections));
+        public static IMapper GetMapper(MapperConfiguration config) => new Mapper(config);
     }
 }

@@ -1,36 +1,58 @@
-﻿<div class="tl-task-item row" style="@CustomStyles">
+﻿<div class="tl-task-item row" style="@CustomStyles" @ondblclick="OpenTaskEditModal">
     <div class="col-8">
         <h5>@Task.Title</h5>
         <p>@Task.Details</p>
     </div>
     <div class="col-4 row">
-        <div class="col-7">
-            <button class="btn btn-success" style="margin-top: 10px; width: auto; height: 45px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Done)">
-                <svg fill="currentColor" style="width: 1em; height: 1em;">
-                    <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>
-        <div class="col-5">
-            <button class="btn btn-danger" style="width: auto; height: 38px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Cancelled)">
-                <svg fill="currentColor" style="width: 1em; height: 1em;">
-                    <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd" />
-                    <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd" />
-                </svg>
-            </button>
-            <div style="height: 5px;"></div>
-            <button class="btn btn-primary" style="width: auto; height: 38px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Postponed)">
-                <svg fill="currentColor" style="width: 1em; height: 1em;">
-                    <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 01.5.5v8a.5.5 0 01-1 0V4a.5.5 0 01.5-.5z" clip-rule="evenodd" />
-                    <path d="M7.596 8.697l-6.363 3.692C.693 12.702 0 12.322 0 11.692V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 010 1.393z" />
-                    <path d="M15.096 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 010 1.393z" />
-                </svg>
-            </button>
-        </div>
+        @if (Task.IsActive())
+        {
+            <div class="col-7">
+                <button class="btn btn-success" style="margin-top: 10px; width: auto; height: 45px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Done)">
+                    <svg fill="currentColor" style="width: 1em; height: 1em;">
+                        <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            <div class="col-5">
+                <button class="btn btn-danger" style="width: auto; height: 38px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Cancelled)">
+                    <svg fill="currentColor" style="width: 1em; height: 1em;">
+                        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div style="height: 5px;"></div>
+                @if (Task.StatusType == StatusTypes.Todo)
+                {
+                    <button class="btn btn-primary" style="width: auto; height: 38px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Postponed)">
+                        <svg fill="currentColor" style="width: 1em; height: 1em;">
+                            <path fill-rule="evenodd" d="M11.354 10.146a.5.5 0 010 .708l-3 3a.5.5 0 01-.708 0l-3-3a.5.5 0 01.708-.708L8 12.793l2.646-2.647a.5.5 0 01.708 0z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M8 6a.5.5 0 01.5.5V13a.5.5 0 01-1 0V6.5A.5.5 0 018 6zM2 3.5a.5.5 0 01.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                }
+                else if (Task.StatusType == StatusTypes.Postponed)
+                {
+                    <button class="btn btn-primary" style="width: auto; height: 38px; border-radius: 20px;" @onclick="() => UpdateTaskStatus(StatusTypes.Todo)">
+                        <svg fill="currentColor" style="width: 1em; height: 1em;">
+                            <path fill-rule="evenodd" d="M11.354 5.854a.5.5 0 000-.708l-3-3a.5.5 0 00-.708 0l-3 3a.5.5 0 10.708.708L8 3.207l2.646 2.647a.5.5 0 00.708 0z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M8 10a.5.5 0 00.5-.5V3a.5.5 0 00-1 0v6.5a.5.5 0 00.5.5zm-4.8 1.6c0-.22.18-.4.4-.4h8.8a.4.4 0 010 .8H3.6a.4.4 0 01-.4-.4z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                }
+            </div>
+        }
+        else
+        {
+            <div style="width: 100%; text-align: right;">
+                <p>@Task.LastUpdateDate.ToString("dd.MM.yyyy")</p>
+            </div>
+        }
     </div>
 </div>
 
 @code {
+
+    private const string INACTIVE_TEXT_COLOR = "#999";
 
     [Parameter]
     public TaskDTO Task { get; set; }
@@ -47,17 +69,23 @@
 
     protected override void OnInitialized()
     {
-        CustomStyles =
-            $"background-color: {GetTaskColorByStatus(Task)}";
+        var sb = new System.Text.StringBuilder();
+
+        sb.Append($"background-color: {GetTaskColorByStatus(Task)};");
+
+        if (!Task.IsActive())
+            sb.Append($"color: {INACTIVE_TEXT_COLOR}");
+
+        CustomStyles = sb.ToString();
     }
 
     private string GetTaskColorByStatus(TaskDTO task) =>
         task.StatusType switch
         {
-            StatusTypes.Todo => "#d6816d",
-            StatusTypes.Postponed => "#7481e3",
+            StatusTypes.Todo => "#e1af8e",
+            StatusTypes.Postponed => "#bfc6f2",
             StatusTypes.Cancelled => "#d3d3d3",
-            StatusTypes.Done => "#97d378",
+            StatusTypes.Done => "#bde2a9",
             _ => "#d3d3d3"
         };
 
@@ -70,6 +98,11 @@
 
         Task.StatusType = statusType;
         await OnTaskUpdate.InvokeAsync(Task);
+    }
+
+    private void OpenTaskEditModal()
+    {
+
     }
 
 }

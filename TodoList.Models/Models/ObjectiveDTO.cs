@@ -14,6 +14,5 @@ namespace TodoList.Models.Models
         public string StatusDetails { get; set; }
         public StatusTypes StatusType { get; set; }
         public DateTime LastUpdateDate { get; set; }
-        public IEnumerable<TaskDTO> Tasks { get; set; }
     }
 }

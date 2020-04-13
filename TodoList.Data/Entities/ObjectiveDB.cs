@@ -34,7 +34,5 @@ namespace TodoList.Data.Entities
 
         [ForeignKey("StatusTypeKey")]
         public StatusTypeDB StatusType { get; set; }
-
-        public virtual ICollection<TaskDB> Tasks { get; set; }
     }
 }

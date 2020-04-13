@@ -13,17 +13,19 @@ namespace TodoList.Data.Providers
     public class WriterProvider : IWriterProvider
     {
         private readonly TodoListContext _context;
+        private readonly MapperConfiguration _mapperConfig;
         private readonly IDateTimeWrapper _dateTimeWrapper;
 
         public WriterProvider(TodoListContext context, IDateTimeWrapper dateTimeWrapper)
         {
             _context = context;
+            _mapperConfig = EntityMapping.GetMapperConfig();
             _dateTimeWrapper = dateTimeWrapper;
         }
 
         public async Task<ObjectiveDTO> CreateObjective(ObjectiveDTO dto)
         {
-            var mapper = EntityMapping.GetMapper();
+            var mapper = EntityMapping.GetMapper(_mapperConfig);
 
             var objective = mapper.Map<ObjectiveDB>(dto);
             objective.LastUpdateDate = _dateTimeWrapper.Now;
@@ -74,12 +76,12 @@ namespace TodoList.Data.Providers
 
             await _context.SaveChangesAsync();
 
-            return EntityMapping.GetMapper().Map<ObjectiveDTO>(objective);
+            return EntityMapping.GetMapper(_mapperConfig).Map<ObjectiveDTO>(objective);
         }
 
         public async Task<TaskDTO> CreateTask(TaskDTO dto)
         {
-            var mapper = EntityMapping.GetMapper();
+            var mapper = EntityMapping.GetMapper(_mapperConfig);
             var task = mapper.Map<TaskDB>(dto);
             task.LastUpdateDate = _dateTimeWrapper.Now;
             _context.Tasks.Add(task);
@@ -102,7 +104,7 @@ namespace TodoList.Data.Providers
 
             await _context.SaveChangesAsync();
 
-            return EntityMapping.GetMapper().Map<TaskDTO>(task);
+            return EntityMapping.GetMapper(_mapperConfig).Map<TaskDTO>(task);
         }
 
         public async Task DeleteTask(int taskId)

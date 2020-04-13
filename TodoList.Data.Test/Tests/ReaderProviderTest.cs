@@ -52,21 +52,6 @@ namespace TodoList.Data.Test.Tests
         }
 
         [DataTestMethod]
-        [DataRow("Lire Tolkien", 3, 1, 1, StatusTypes.Todo)]
-        [DataRow("Un café", 2, 1, 2, StatusTypes.Todo)]
-        [DataRow("Avertir les communes", 10, 2, 2, null)]
-        public async Task GetObjectives_TestTasksPriorityOrder(string expectedTaskTitle, int expectedTaskPriority, int itemIndex, int itemTasksIndex, StatusTypes? statusType)
-        {
-            var objectives = await _provider.GetObjectives(statusType);
-            Assert.IsTrue(objectives.Count() > itemIndex);
-            var objective = objectives.ToList()[itemIndex];
-            Assert.IsTrue(objective.Tasks.Count() > itemTasksIndex);
-            var task = objective.Tasks.ToList()[itemTasksIndex];
-            Assert.AreEqual(expectedTaskTitle, task.Title);
-            Assert.AreEqual(expectedTaskPriority, task.Priority);
-        }
-
-        [DataTestMethod]
         [DataRow(1, 3, StatusTypes.Postponed)]
         [DataRow(3, 2, null)]
         [DataRow(2, 1, StatusTypes.Todo)]
